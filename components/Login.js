@@ -1,30 +1,34 @@
 import React, { useEffect, useState } from 'react';
-import {View, Text, StyleSheet, TouchableOpacity, Image, TextInput} from 'react-native';
+import {View, Text, StyleSheet, TouchableOpacity, Image, TextInput, KeyboardAvoidingView, Platform} from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
 export function Login (props) 
 {
     const navigation = useNavigation()
+    const [userEmail,setUserEmail] = useState()
+    const [userPassword, setUserPassword] = useState()
     return(
 
         <View style={styles.container}>
             <Image source={ require('../assets/fresh4.jpeg') } style={styles.backgroundImage}/>
-            <View style={styles.inputView}>
+            <KeyboardAvoidingView>
+                <View style={styles.inputView}>
                     <Text style={styles.welcomeTitle}>WELCOME TO FRESHMADE</Text>
                     <Text style={styles.title}>Email Address</Text>
                     <TextInput style={styles.textInput} />
                     <Text style={styles.title}>Password</Text>
                     <TextInput style={styles.textInput} />
-                    <View style={styles.innerButtonView}>
-                        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate("Home")}>
-                            <Text style={styles.buttonText}>Log In</Text>
-                        </TouchableOpacity>
-                        <Text>OR</Text>
-                        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate("Register")}>
-                            <Text style={styles.buttonText}>Register</Text>
-                        </TouchableOpacity>
-                    </View>
-            </View>
+                        <View style={styles.innerButtonView}>
+                            <TouchableOpacity style={styles.button} onPress={() => navigation.navigate("Home")}>
+                                <Text style={styles.buttonText}>Log In</Text>
+                            </TouchableOpacity>
+                            <Text>OR</Text>
+                            <TouchableOpacity style={styles.button} onPress={() => navigation.navigate("Register")}>
+                                <Text style={styles.buttonText}>Register</Text>
+                            </TouchableOpacity>
+                        </View>
+                </View>
+            </KeyboardAvoidingView>
         </View>
     )
 }

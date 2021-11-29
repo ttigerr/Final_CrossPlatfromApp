@@ -9,24 +9,11 @@ import { Save } from './components/Save';
 
 const Tab = createBottomTabNavigator()
 
-// Screen
-const HomeScreen = () => {
-    return(
-        <Tab.Navigator>
-            <Tab.Screen name="Home" component={Home}/>
-            <Tab.Screen name="Save" component={Save}/>
-        </Tab.Navigator>
-    )
+export function BottomNavigation (props) {
+  return (
+    <Tab.Navigator >
+        <Tab.Screen name="Home" component={Home}/>
+        <Tab.Screen name="Save" component={Save}/>
+    </Tab.Navigator>
+  );
 }
-
-
-// export default function App() {
-//   return (
-//     <NavigationContainer>
-//       <Tab.Navigator >
-//         <Tab.Screen name="Home" component={Home}/>
-        
-//       </Tab.Navigator>
-//     </NavigationContainer>
-//   );
-// }

@@ -8,15 +8,21 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 // Import components
 import { Login } from './components/Login';
 import { Register } from './components/Register';
-import { Home } from './components/Home';
-
+import { BottomNavigation } from './BottomNavigation';
 
 // Import firebase
 import { firebaseConfig } from './Config';
+import {initializeApp,} from 'firebase/app';
+import { getAuth, createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndPassword, signOut } from "firebase/auth"
+import { initializeFirestore, getFirestore, setDoc, doc, addDoc, collection } from 'firebase/firestore'
 
-
+// Initialize the stack
 const Stack = createNativeStackNavigator()
-const Tab = createBottomTabNavigator()
+
+// Initialize the firebase variable
+const FBapp = initializeApp( firebaseConfig)
+const FSdb = initializeFirestore(FBapp, {useFetchStreams: false})
+const FBauth = getAuth()
 
 export default function App() {
   
@@ -25,7 +31,10 @@ export default function App() {
       <Stack.Navigator >
         <Stack.Screen name="welcome" component={Login}/>
         <Stack.Screen name="Register" component={Register}/>
-        <Stack.Screen name="Home" component={Home}/>
+        <Stack.Screen 
+          name="Home" 
+          component={BottomNavigation}
+          options={{headerShown: false}}/>
       </Stack.Navigator>
     </NavigationContainer>
   );

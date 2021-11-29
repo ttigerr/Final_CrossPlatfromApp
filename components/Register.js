@@ -1,24 +1,28 @@
 import React, { useEffect, useState } from 'react';
-import {View, Text, StyleSheet, Image, TouchableOpacity, TextInput} from 'react-native';
+import {View, Text, StyleSheet, Image, TouchableOpacity, TextInput, KeyboardAvoidingView, Platform} from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
 export function Register (props) 
 {
+    const navigation = useNavigation()
     return(
         
         <View style={styles.container} >
             <Image source={ require('../assets/fresh2.png') } style={styles.bannerImage}/>
-            <View style={styles.inputView}>
-                <Text style={styles.mainTitle}>Register</Text>
-                <Text style={styles.title}>Email Address</Text>
-                <TextInput style={styles.textInput} />
-                <Text style={styles.title}>Password</Text>
-                <TextInput style={styles.textInput} />
-                    <View style={styles.innerButtonView}>
-                        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate("Home")}>
-                            <Text style={styles.buttonText}>Log In</Text>
-                        </TouchableOpacity>
-                    </View>
-            </View>
+            <KeyboardAvoidingView>
+                <View style={styles.inputView}>
+                    <Text style={styles.mainTitle}>Register</Text>
+                    <Text style={styles.title}>Email Address</Text>
+                    <TextInput style={styles.textInput} />
+                    <Text style={styles.title}>Password</Text>
+                    <TextInput style={styles.textInput} />
+                        <View style={styles.innerButtonView}>
+                            <TouchableOpacity style={styles.button} onPress={() => navigation.navigate("Home")}>
+                                <Text style={styles.buttonText}>Log In</Text>
+                            </TouchableOpacity>
+                        </View>
+                </View>
+            </KeyboardAvoidingView>
         </View>
     )
 }
