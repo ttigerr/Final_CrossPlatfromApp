@@ -5,21 +5,33 @@ import { useNavigation } from '@react-navigation/native';
 export function Login (props) 
 {
     const navigation = useNavigation()
+
     const [userEmail,setUserEmail] = useState()
     const [userPassword, setUserPassword] = useState()
+
+    useEffect( () => {
+        if( props.auth === true ) {
+          navigation.reset({ index: 0, routes: [ {name: 'Home'} ] })
+        }
+      }, [props.auth] )
+
     return(
 
         <View style={styles.container}>
             <Image source={ require('../assets/fresh4.jpeg') } style={styles.backgroundImage}/>
-            <KeyboardAvoidingView>
+            <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"}>
                 <View style={styles.inputView}>
                     <Text style={styles.welcomeTitle}>WELCOME TO FRESHMADE</Text>
                     <Text style={styles.title}>Email Address</Text>
-                    <TextInput style={styles.textInput} />
+                    <TextInput style={styles.textInput} onChangeText={ (val) => setUserEmail(val) }/>
                     <Text style={styles.title}>Password</Text>
-                    <TextInput style={styles.textInput} />
+                    <TextInput style={styles.textInput} 
+                        onChangeText={ (val) => setUserPassword(val) } 
+                        secureTextEntry={true}
+                    />
+                    {/* <Message message={props.error} /> */}
                         <View style={styles.innerButtonView}>
-                            <TouchableOpacity style={styles.button} onPress={() => navigation.navigate("Home")}>
+                            <TouchableOpacity style={styles.button} onPress={ () => { props.handler(userEmail,userPassword) }}>
                                 <Text style={styles.buttonText}>Log In</Text>
                             </TouchableOpacity>
                             <Text>OR</Text>
@@ -45,7 +57,7 @@ const styles = StyleSheet.create ({
     backgroundImage: {
         maxWidth: 400,
         maxHeight: 300,
-        margin: 10
+        margin: 50
     },
     welcomeTitle: {
         fontWeight:"bold",
@@ -72,6 +84,13 @@ const styles = StyleSheet.create ({
     buttonText: {
         color: 'white',
         textAlign: "center"
+    },
+    disableButton: {
+        marginVertical: 20,
+        backgroundColor: "#b2b2b2",
+        padding: 10,
+        borderRadius: 10,
+        width: 150
     },
     textInput: {
         backgroundColor: '#f1f1f1',

@@ -1,22 +1,34 @@
 import React, { useEffect, useState } from 'react';
-import {View, Text, StyleSheet} from 'react-native';
-import { NavigationContainer } from '@react-navigation/native';
+import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
-const HomeScreen = ({navigation}) => {}
+
+
 export function Home (props) 
 {
+    const navigation = useNavigation()
     return(
 
-        <View>
+        <View style={styles.container}>
             <Text>Welcome to home screen</Text>
+            {/* <TouchableOpacity onPress={ () => navigation.navigate('Logout') }>
+                <Text style={styles.metaText}>Log out</Text>
+            </TouchableOpacity> */}
         </View>
     )
 }
 
 // Style of Home
 
-const Styles = StyleSheet.create ({
-
+const styles = StyleSheet.create ({
+    container:{
+        flex: 1,
+        backgroundColor: 'white',
+    
+    },
+    metaText: {
+        textAlign: 'center'
+    }
 })
