@@ -73,13 +73,13 @@ export default function App() {
     })
   }
 
-  const LogoutHandler = () => {
-    signOut( FBauth ).then( () => {
-      setAuth( false )
-      setUser( null )
-    })
-    .catch( (error) => console.log(error.code) )
-  }
+  // const LogoutHandler = () => {
+  //   signOut( FBauth ).then( () => {
+  //     setAuth( false )
+  //     setUser( null )
+  //   })
+  //   .catch( (error) => console.log(error.code) )
+  // }
 
   const getData = () => {
     const FSquery = query( collection( FSdb, `foods/${user.uid}/documents`) )
@@ -117,7 +117,7 @@ export default function App() {
             error={registerError} 
           /> }
         </Stack.Screen>
-        <Stack.Screen name="Home" options={{ headerRight: (props) => <Logout {...props} handler={LogoutHandler} user={user}/>}}>
+        <Stack.Screen name="Home" >
           { (props) => 
             <BottomNavigation {...props} 
             auth={auth}

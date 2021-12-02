@@ -8,6 +8,7 @@ import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIc
 import { Home } from './components/Home';
 import { ItemLists } from './components/ItemLists';
 import { Profile } from './components/Profile';
+import { Logout } from './components/Logout';
 
 // Import database
 import { firebaseConfig } from './Config';
@@ -34,7 +35,7 @@ export function BottomNavigation (props) {
             setAuth(true) 
             setUser(user)
             console.log( 'authed')
-            if( !data ) { getData() }
+            //if( !data ) { getData() }
           }
           else {
             setAuth(false)
@@ -43,13 +44,13 @@ export function BottomNavigation (props) {
         })
     })
 
-    // const LogoutHandler = () => {
-    //     signOut( FBauth ).then( () => {
-    //       setAuth( false )
-    //       setUser( null )
-    //     })
-    //     .catch( (error) => console.log(error.code) )
-    // }
+    const LogoutHandler = () => {
+        signOut( FBauth ).then( () => {
+          setAuth( false )
+          setUser( null )
+        })
+        .catch( (error) => console.log(error.code) )
+    }
 
     // const addData = async ( FScollection , data ) => {
     //     //adding data to a collection with automatic id
@@ -90,6 +91,7 @@ export function BottomNavigation (props) {
         <Tab.Screen name="Profile" 
             options={{headerTitleStyle: {fontSize: 30}, headerTitleAlign: 'left',
             tabBarActiveTintColor: '#f08f11',
+            headerRight: (props) => <Logout {...props} handler={LogoutHandler} user={user} />,
             tabBarIcon: ({color, size}) => (<MaterialCommunityIcon name= "account"color={color} size={size}/>)
         }}>
             { (props) => <Profile {...props}/> }
