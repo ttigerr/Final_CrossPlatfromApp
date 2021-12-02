@@ -94,9 +94,10 @@ const styles = StyleSheet.create ({
         alignItems: "center"
     },
     bannerImage: {
-        flex: 1,
+        
         maxWidth: 400,
-        maxHeight: 300
+        maxHeight: 300,
+        margin: 50
     },
     inputView: {
         maxWidth: 400,
@@ -141,7 +142,7 @@ const styles = StyleSheet.create ({
         fontSize:35,
         color:"black",
         textAlign: "center",
-        margin: 30
+        marginBottom: 30
 
     },
     metaText: {

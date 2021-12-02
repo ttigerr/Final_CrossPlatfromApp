@@ -6,29 +6,42 @@ import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIc
 
 // Import components
 import { Home } from './components/Home';
-import { Save } from './components/Save';
+import { ItemLists } from './components/ItemLists';
 import { Profile } from './components/Profile';
 
+// Import database
+import { firebaseConfig } from './Config';
+import {initializeApp,} from 'firebase/app'
+import { getAuth, onAuthStateChanged} from "firebase/auth"
+import { initializeFirestore, getFirestore, setDoc, doc, addDoc, collection, query, where, onSnapshot } from 'firebase/firestore'
+
+// initialise the assets from database
+const FBapp = initializeApp( firebaseConfig)
+const FSdb = initializeFirestore(FBapp, {useFetchStreams: false})
+const FBauth = getAuth()
+
 const Tab = createBottomTabNavigator()
-// const FBauth = getAuth()
+
 
 export function BottomNavigation (props) {
-    // const[ auth, setAuth ] = useState()
-    // const[ user, setUser ] = useState()
+    const[ auth, setAuth ] = useState()
+    const[ user, setUser ] = useState()
+    const [ data, setData ] = useState()
 
-    // useEffect(() => {
-    //     onAuthStateChanged( FBauth, (user) => {
-    //       if( user ) { 
-    //         setAuth(true) 
-    //         setUser(user)
-    //         console.log( 'authed')
-    //       }
-    //       else {
-    //         setAuth(false)
-    //         setUser(null)
-    //       }
-    //     })
-    // })
+    useEffect(() => {
+        onAuthStateChanged( FBauth, (user) => {
+          if( user ) { 
+            setAuth(true) 
+            setUser(user)
+            console.log( 'authed')
+            if( !data ) { getData() }
+          }
+          else {
+            setAuth(false)
+            setUser(null)
+          }
+        })
+    })
 
     // const LogoutHandler = () => {
     //     signOut( FBauth ).then( () => {
@@ -37,26 +50,50 @@ export function BottomNavigation (props) {
     //     })
     //     .catch( (error) => console.log(error.code) )
     // }
+
+    // const addData = async ( FScollection , data ) => {
+    //     //adding data to a collection with automatic id
+    //     //const ref = await addDoc( collection(FSdb, FScollection ), data )
+    //     const ref = await setDoc( doc( FSdb, `foods/${user.uid}/documents/${ new Date().getTime() }`), data )
+    //     //console.log( ref.id )
+    // }
+
+    // const getData = () => {
+    //     const FSquery = query( collection( FSdb, `foods`) )
+    //     const unsubscribe = onSnapshot( FSquery, ( querySnapshot ) => {
+    //       let FSdata = []
+    //       querySnapshot.forEach( (doc) => {
+    //         let item = {}
+    //         item = doc.data()
+    //         item.id = doc.id
+    //         FSdata.push( item )
+    //       })
+    //       setData( FSdata )
+    //     })
+    //   }
   return (
     <Tab.Navigator >
         <Tab.Screen name="Browse" 
-            component={Home} 
             options={{headerTitleStyle: {fontSize: 30}, headerTitleAlign: 'left',
             tabBarActiveTintColor: '#f08f11',
-            tabBarIcon: ({color}) => (<MaterialCommunityIcon name= "home"color={color} size={26}/>)
-        }}/>
-        <Tab.Screen name="Save" 
-            component={Save} 
+            tabBarIcon: ({color, size}) => (<MaterialCommunityIcon name= "home"color={color} size={size}/>)
+        }}>
+            { (props) => <Home {...props}/> }
+        </Tab.Screen>
+        <Tab.Screen name="Lists" 
             options={{headerTitleStyle: {fontSize: 30}, headerTitleAlign: 'left',
             tabBarActiveTintColor: '#f08f11',
-            tabBarIcon: ({color}) => (<MaterialCommunityIcon name= "list"color={color} size={26}/>)
-        }}/>
+            tabBarIcon: ({color, size}) => (<MaterialCommunityIcon name= "format-list-bulleted"color={color} size={size}/>)
+        }}>
+            { (props) => <ItemLists {...props} /> }
+        </Tab.Screen>
         <Tab.Screen name="Profile" 
-            component={Profile} 
             options={{headerTitleStyle: {fontSize: 30}, headerTitleAlign: 'left',
             tabBarActiveTintColor: '#f08f11',
-            tabBarIcon: ({color}) => (<MaterialCommunityIcon name= "account"color={color} size={26}/>)
-        }}/>
+            tabBarIcon: ({color, size}) => (<MaterialCommunityIcon name= "account"color={color} size={size}/>)
+        }}>
+            { (props) => <Profile {...props}/> }
+        </Tab.Screen>
     </Tab.Navigator>
   );
 }

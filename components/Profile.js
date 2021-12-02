@@ -6,8 +6,20 @@ export function Profile (props)
 {
     return(
 
-        <View>
+        <View style={styles.container}>
             
         </View>
     )
+
 }
+
+// Style of Home
+const styles = StyleSheet.create ({
+    container:{
+        flex: 1,
+        backgroundColor: 'white',
+    },
+    metaText: {
+        textAlign: 'center'
+    }
+})

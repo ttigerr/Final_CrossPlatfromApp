@@ -31,6 +31,7 @@ export default function App() {
   // Initialize
   const[ auth, setAuth ] = useState()
   const[ user, setUser ] = useState()
+  const [ data, setData ] = useState()
   const [registerError, setRegisterError ] = useState()
   const [loginError, setLoginError ] = useState()
 
@@ -40,6 +41,7 @@ export default function App() {
         setAuth(true) 
         setUser(user)
         console.log( 'authed')
+        if( !data ) { getData() }
       }
       else {
         setAuth(false)
@@ -79,13 +81,27 @@ export default function App() {
     .catch( (error) => console.log(error.code) )
   }
 
+  const getData = () => {
+    const FSquery = query( collection( FSdb, `foods/${user.uid}/documents`) )
+    const unsubscribe = onSnapshot( FSquery, ( querySnapshot ) => {
+      let FSdata = []
+      querySnapshot.forEach( (doc) => {
+        let item = {}
+        item = doc.data()
+        item.id = doc.id
+        FSdata.push( item )
+      })
+      setData( FSdata )
+    })
+  }
+
   return (
     <NavigationContainer>
       <Stack.Navigator screenOptions={{headerShown: false}} >
-        {/* <Stack.Screen name="Splash">
+        <Stack.Screen name="Splash">
           { (props) => <Splash {...props} loadingText="Hello App" /> }
-        </Stack.Screen> */}
-        <Stack.Screen name="welcome" options={{title: 'Log In'}}>
+        </Stack.Screen>
+        <Stack.Screen name="Login" options={{title: 'Log In'}}>
           { (props) => 
               <Login {...props} 
               handler={LoginHandler} 
@@ -101,10 +117,11 @@ export default function App() {
             error={registerError} 
           /> }
         </Stack.Screen>
-        <Stack.Screen name="Home" options={{headerShown: false, headerRight: (props) => <Logout {...props} handler={LogoutHandler} user={user}/>}}>
+        <Stack.Screen name="Home" options={{ headerRight: (props) => <Logout {...props} handler={LogoutHandler} user={user}/>}}>
           { (props) => 
             <BottomNavigation {...props} 
             auth={auth}
+            data={data}
           /> }
         </Stack.Screen>
       </Stack.Navigator>
