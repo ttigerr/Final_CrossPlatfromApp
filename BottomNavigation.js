@@ -35,7 +35,7 @@ export function BottomNavigation (props) {
             setAuth(true) 
             setUser(user)
             console.log( 'authed')
-            //if( !data ) { getData() }
+            if( !data ) { getData() }
           }
           else {
             setAuth(false)
@@ -59,19 +59,19 @@ export function BottomNavigation (props) {
     //     //console.log( ref.id )
     // }
 
-    // const getData = () => {
-    //     const FSquery = query( collection( FSdb, `foods`) )
-    //     const unsubscribe = onSnapshot( FSquery, ( querySnapshot ) => {
-    //       let FSdata = []
-    //       querySnapshot.forEach( (doc) => {
-    //         let item = {}
-    //         item = doc.data()
-    //         item.id = doc.id
-    //         FSdata.push( item )
-    //       })
-    //       setData( FSdata )
-    //     })
-    //   }
+    const getData = () => {
+        const FSquery = query( collection( FSdb, `foods`) )
+        const unsubscribe = onSnapshot( FSquery, ( querySnapshot ) => {
+          let FSdata = []
+          querySnapshot.forEach( (doc) => {
+            let item = {}
+            item = doc.data()
+            item.id = doc.id
+            FSdata.push( item )
+          })
+          setData( FSdata )
+        })
+      }
   return (
     <Tab.Navigator >
         <Tab.Screen name="Browse" 
@@ -86,7 +86,7 @@ export function BottomNavigation (props) {
             tabBarActiveTintColor: '#f08f11',
             tabBarIcon: ({color, size}) => (<MaterialCommunityIcon name= "format-list-bulleted"color={color} size={size}/>)
         }}>
-            { (props) => <ItemLists {...props} /> }
+            { (props) => <ItemLists {...props} auth={auth} data={ data } /> }
         </Tab.Screen>
         <Tab.Screen name="Profile" 
             options={{headerTitleStyle: {fontSize: 30}, headerTitleAlign: 'left',

@@ -81,19 +81,19 @@ export default function App() {
   //   .catch( (error) => console.log(error.code) )
   // }
 
-  const getData = () => {
-    const FSquery = query( collection( FSdb, `foods/${user.uid}/documents`) )
-    const unsubscribe = onSnapshot( FSquery, ( querySnapshot ) => {
-      let FSdata = []
-      querySnapshot.forEach( (doc) => {
-        let item = {}
-        item = doc.data()
-        item.id = doc.id
-        FSdata.push( item )
-      })
-      setData( FSdata )
-    })
-  }
+  // const getData = () => {
+  //   const FSquery = query( collection( FSdb, `foods/${user.uid}/documents`) )
+  //   const unsubscribe = onSnapshot( FSquery, ( querySnapshot ) => {
+  //     let FSdata = []
+  //     querySnapshot.forEach( (doc) => {
+  //       let item = {}
+  //       item = doc.data()
+  //       item.id = doc.id
+  //       FSdata.push( item )
+  //     })
+  //     setData( FSdata )
+  //   })
+  // }
 
   return (
     <NavigationContainer>
@@ -121,7 +121,6 @@ export default function App() {
           { (props) => 
             <BottomNavigation {...props} 
             auth={auth}
-            data={data}
           /> }
         </Stack.Screen>
       </Stack.Navigator>
