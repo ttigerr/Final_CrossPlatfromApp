@@ -34,8 +34,8 @@ export function BottomNavigation (props) {
           if( user ) { 
             setAuth(true) 
             setUser(user)
-            console.log( 'authed')
-            if( !data ) { getData() }
+            // console.log( 'authed')
+            // if( !data ) { getData() }
           }
           else {
             setAuth(false)
