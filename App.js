@@ -41,7 +41,7 @@ export default function App() {
         setAuth(true) 
         setUser(user)
         console.log( 'authed')
-        if( !data ) { getData() }
+        //if( !data ) { getData() }
       }
       else {
         setAuth(false)
@@ -73,27 +73,27 @@ export default function App() {
     })
   }
 
-  // const LogoutHandler = () => {
-  //   signOut( FBauth ).then( () => {
-  //     setAuth( false )
-  //     setUser( null )
-  //   })
-  //   .catch( (error) => console.log(error.code) )
-  // }
+  const LogoutHandler = () => {
+    signOut( FBauth ).then( () => {
+      setAuth( false )
+      setUser( null )
+    })
+    .catch( (error) => console.log(error.code) )
+  }
 
-  // const getData = () => {
-  //   const FSquery = query( collection( FSdb, `foods/${user.uid}/documents`) )
-  //   const unsubscribe = onSnapshot( FSquery, ( querySnapshot ) => {
-  //     let FSdata = []
-  //     querySnapshot.forEach( (doc) => {
-  //       let item = {}
-  //       item = doc.data()
-  //       item.id = doc.id
-  //       FSdata.push( item )
-  //     })
-  //     setData( FSdata )
-  //   })
-  // }
+  const getData = (props) => {
+    const FSquery = query( collection( FSdb, `foods`) )
+    const unsubscribe = onSnapshot( FSquery, ( querySnapshot ) => {
+      let FSdata = []
+      querySnapshot.forEach( (doc) => {
+        let item = {}
+        item = doc.data()
+        item.id = doc.id
+        FSdata.push( item )
+      })
+      setData( FSdata )
+    })
+  }
 
   return (
     <NavigationContainer>
@@ -121,6 +121,7 @@ export default function App() {
           { (props) => 
             <BottomNavigation {...props} 
             auth={auth}
+            get = {getData}
           /> }
         </Stack.Screen>
       </Stack.Navigator>
