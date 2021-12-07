@@ -1,9 +1,7 @@
-import { StatusBar } from 'expo-status-bar';
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 // Import components
 import { Login } from './components/Login';
@@ -16,7 +14,7 @@ import { Splash } from './components/Splash';
 import { firebaseConfig } from './Config';
 import {initializeApp,} from 'firebase/app';
 import { getAuth, createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndPassword, signOut } from "firebase/auth"
-import { initializeFirestore, getFirestore, setDoc, doc, addDoc, collection } from 'firebase/firestore'
+import { initializeFirestore, getFirestore, setDoc, doc, addDoc, query, onSnapshot, collection } from 'firebase/firestore'
 
 // Initialize the stack
 const Stack = createNativeStackNavigator()
@@ -36,11 +34,10 @@ export default function App() {
   const [loginError, setLoginError ] = useState()
 
   useEffect(() => {
-    onAuthStateChanged( FBauth, (user) => {
+    const unsubscribe = onAuthStateChanged( FBauth, (user) => {
       if( user ) { 
         setAuth(true) 
         setUser(user)
-        console.log( 'authed')
         if( !data ) { getData() }
       }
       else {
@@ -48,6 +45,7 @@ export default function App() {
         setUser(null)
       }
     })
+    unsubscribe()
   })
   // Registration
   const RegisterHandler = ( email, password ) => {
@@ -73,35 +71,52 @@ export default function App() {
     })
   }
 
-  // const LogoutHandler = () => {
-  //   signOut( FBauth ).then( () => {
-  //     setAuth( false )
-  //     setUser( null )
-  //   })
-  //   .catch( (error) => console.log(error.code) )
-  // }
+  const LogoutHandler = () => {
+    signOut( FBauth ).then( () => {
+      setAuth( false )
+      setUser( null )
+    })
+    .catch( (error) => console.log(error.code) )
+  }
 
-  // const getData = () => {
-  //   const FSquery = query( collection( FSdb, `foods/${user.uid}/documents`) )
-  //   const unsubscribe = onSnapshot( FSquery, ( querySnapshot ) => {
-  //     let FSdata = []
-  //     querySnapshot.forEach( (doc) => {
-  //       let item = {}
-  //       item = doc.data()
-  //       item.id = doc.id
-  //       FSdata.push( item )
-  //     })
-  //     setData( FSdata )
-  //   })
-  // }
+  const getData = () => {
+    const FSquery = query( collection( FSdb, `foods/${user.uid}/documents`) )
+    const unsubscribe = onSnapshot( FSquery, ( querySnapshot ) => {
+      let FSdata = []
+      querySnapshot.forEach( (doc) => {
+        let item = {}
+        item = doc.data()
+        item.id = doc.id
+        FSdata.push( item )
+      })
+      setData( FSdata )
+    })
+  }
+
+  const getDetail = ( id ) => {
+    
+  }
+
+  const addDocument = async ( FScollection , data ) => {
+    // adding data to a collection with automatic id
+    const ref = await addDoc( collection( FSdb, FScollection) , data )
+    // log the id of the new document
+    //console.log( ref.id )
+    //return ref
+  }
+
+  const setDocument = async ( FScollection, id, data ) => {
+    const ref = doc( FSdb, FScollection, id )
+    await setDoc( ref, data )
+  }
 
   return (
     <NavigationContainer>
-      <Stack.Navigator screenOptions={{headerShown: false}} >
-        <Stack.Screen name="Splash">
-          { (props) => <Splash {...props} loadingText="Hello App" /> }
+      <Stack.Navigator screenOptions={{headerShown: false}} initialRouteName="Splash" >
+        <Stack.Screen name="Splash" options={{ headerShown: false }}>
+          { (props) => <Splash {...props} loadingText="Hello App" auth={auth} test={addDocument} /> }
         </Stack.Screen>
-        <Stack.Screen name="Login" options={{title: 'Log In'}}>
+        <Stack.Screen name="Login" options={{title:'Log In'}}>
           { (props) => 
               <Login {...props} 
               handler={LoginHandler} 
@@ -121,6 +136,8 @@ export default function App() {
           { (props) => 
             <BottomNavigation {...props} 
             auth={auth}
+            data={data}
+            logout={<Logout handler={LogoutHandler} />}
           /> }
         </Stack.Screen>
       </Stack.Navigator>

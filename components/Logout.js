@@ -3,12 +3,9 @@ import { StyleSheet, TouchableOpacity, Text } from "react-native";
 
 export function Logout( props ) {
 
-  const handlerPress = () => {
-
-  }
   return(
     <TouchableOpacity onPress={() => props.handler()}>
-      <Text style={styles.signoutText}>Signout</Text>
+      <Text style={styles.signoutText}>Log out</Text>
     </TouchableOpacity>
   )
 }

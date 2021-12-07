@@ -24,56 +24,9 @@ const FBauth = getAuth()
 const Tab = createBottomTabNavigator()
 
 
-export function BottomNavigation (props) {
-    const[ auth, setAuth ] = useState()
-    const[ user, setUser ] = useState()
-    const [ data, setData ] = useState()
-
-    useEffect(() => {
-        onAuthStateChanged( FBauth, (user) => {
-          if( user ) { 
-            setAuth(true) 
-            setUser(user)
-            // console.log( 'authed')
-            // if( !data ) { getData() }
-          }
-          else {
-            setAuth(false)
-            setUser(null)
-          }
-        })
-    })
-
-    const LogoutHandler = () => {
-        signOut( FBauth ).then( () => {
-          setAuth( false )
-          setUser( null )
-        })
-        .catch( (error) => console.log(error.code) )
-    }
-
-    // const addData = async ( FScollection , data ) => {
-    //     //adding data to a collection with automatic id
-    //     //const ref = await addDoc( collection(FSdb, FScollection ), data )
-    //     const ref = await setDoc( doc( FSdb, `foods/${user.uid}/documents/${ new Date().getTime() }`), data )
-    //     //console.log( ref.id )
-    // }
-
-    const getData = () => {
-        const FSquery = query( collection( FSdb, `foods`) )
-        const unsubscribe = onSnapshot( FSquery, ( querySnapshot ) => {
-          let FSdata = []
-          querySnapshot.forEach( (doc) => {
-            let item = {}
-            item = doc.data()
-            item.id = doc.id
-            FSdata.push( item )
-          })
-          setData( FSdata )
-        })
-      }
+export function BottomNavigation (props) { 
   return (
-    <Tab.Navigator >
+    <Tab.Navigator screenOptions={{ headerRight: props.logout }}>
         <Tab.Screen name="Browse" 
             options={{headerTitleStyle: {fontSize: 30}, headerTitleAlign: 'left',
             tabBarActiveTintColor: '#f08f11',
@@ -81,7 +34,7 @@ export function BottomNavigation (props) {
         }}>
             { (props) => <Home {...props}/> }
         </Tab.Screen>
-        <Tab.Screen name="Lists" 
+        <Tab.Screen name="Favourites" 
             options={{headerTitleStyle: {fontSize: 30}, headerTitleAlign: 'left',
             tabBarActiveTintColor: '#f08f11',
             tabBarIcon: ({color, size}) => (<MaterialCommunityIcon name= "format-list-bulleted"color={color} size={size}/>)
