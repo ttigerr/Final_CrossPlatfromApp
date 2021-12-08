@@ -41,7 +41,7 @@ export default function App() {
         setAuth(true) 
         setUser(user)
         console.log( 'authed')
-        //if( !data ) { getData() }
+        
       }
       else {
         setAuth(false)
@@ -99,7 +99,7 @@ export default function App() {
     <NavigationContainer>
       <Stack.Navigator screenOptions={{headerShown: false}} >
         <Stack.Screen name="Splash">
-          { (props) => <Splash {...props} loadingText="Hello App" /> }
+          { (props) => <Splash {...props} loadingText="Welcome to freshmade" /> }
         </Stack.Screen>
         <Stack.Screen name="Login" options={{title: 'Log In'}}>
           { (props) => 

@@ -29,15 +29,15 @@ export function BottomNavigation (props) {
     const[ user, setUser ] = useState()
     const [ data, setData ] = useState()
 
-  useEffect( () => {
-    if(!data) {
-      props.get()
-      .then( (response) => {
-        setData( response )
-      })
-      //.catch( (error) => console.log(error) )
-    }
-  }, [data] )
+  // useEffect( () => {
+  //   if(!data) {
+  //     props.get()
+  //     .then( (response) => {
+  //       setData( response )
+  //     })
+  //     //.catch( (error) => console.log(error) )
+  //   }
+  // }, [data] )
 
 
   return (
@@ -54,12 +54,12 @@ export function BottomNavigation (props) {
             tabBarActiveTintColor: '#f08f11',
             tabBarIcon: ({color, size}) => (<MaterialCommunityIcon name= "format-list-bulleted"color={color} size={size}/>)
         }}>
-            { (props) => <ItemLists {...props} data = {data} /> }
+            { (props) => <ItemLists {...props} /> }
         </Tab.Screen>
         <Tab.Screen name="Profile" 
             options={{headerTitleStyle: {fontSize: 30}, headerTitleAlign: 'left',
             tabBarActiveTintColor: '#f08f11',
-            headerRight: (props) => <Logout {...props} handler={LogoutHandler} user={user} />,
+            //headerRight: (props) => <Logout {...props} handler={LogoutHandler} user={user} />,
             tabBarIcon: ({color, size}) => (<MaterialCommunityIcon name= "account"color={color} size={size}/>)
         }}>
             { (props) => <Profile {...props}/> }
