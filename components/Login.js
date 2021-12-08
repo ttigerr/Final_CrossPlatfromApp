@@ -1,44 +1,43 @@
 import React, { useEffect, useState } from 'react';
-import {View, Text, StyleSheet, TouchableOpacity, Image, TextInput, KeyboardAvoidingView, Platform} from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Image, TextInput, KeyboardAvoidingView, Platform } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
-export function Login (props) 
-{
+export function Login(props) {
     const navigation = useNavigation()
 
-    const [userEmail,setUserEmail] = useState()
+    const [userEmail, setUserEmail] = useState()
     const [userPassword, setUserPassword] = useState()
 
-    useEffect( () => {
-        if( props.auth === true ) {
-          navigation.reset({ index: 0, routes: [ {name: 'Home'} ] })
+    useEffect(() => {
+        if (props.auth === true) {
+            navigation.reset({ index: 0, routes: [{ name: "Home" }] });
         }
-      }, [props.auth] )
+    }, [props.auth])
 
-    return(
+    return (
 
         <View style={styles.container}>
-            <Image source={ require('../assets/fresh4.jpeg') } style={styles.backgroundImage}/>
+            <Image source={require('../assets/fresh4.jpeg')} style={styles.backgroundImage} />
             <KeyboardAvoidingView behavior={Platform.OS === "ios" ? "padding" : "height"}>
                 <View style={styles.inputView}>
                     <Text style={styles.welcomeTitle}>WELCOME TO FRESHMADE</Text>
                     <Text style={styles.title}>Email Address</Text>
-                    <TextInput style={styles.textInput} onChangeText={ (val) => setUserEmail(val) }/>
+                    <TextInput style={styles.textInput} onChangeText={(val) => setUserEmail(val)} />
                     <Text style={styles.title}>Password</Text>
-                    <TextInput style={styles.textInput} 
-                        onChangeText={ (val) => setUserPassword(val) } 
+                    <TextInput style={styles.textInput}
+                        onChangeText={(val) => setUserPassword(val)}
                         secureTextEntry={true}
                     />
                     {/* <Message message={props.error} /> */}
-                        <View style={styles.innerButtonView}>
-                            <TouchableOpacity style={styles.button} onPress={ () => { props.handler(userEmail,userPassword) }}>
-                                <Text style={styles.buttonText}>Log In</Text>
-                            </TouchableOpacity>
-                            <Text>OR</Text>
-                            <TouchableOpacity style={styles.button} onPress={() => navigation.navigate("Register")}>
-                                <Text style={styles.buttonText}>Register</Text>
-                            </TouchableOpacity>
-                        </View>
+                    <View style={styles.innerButtonView}>
+                        <TouchableOpacity style={styles.button} onPress={() => { props.handler(userEmail, userPassword) }}>
+                            <Text style={styles.buttonText}>Log In</Text>
+                        </TouchableOpacity>
+                        <Text>OR</Text>
+                        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate("Register")}>
+                            <Text style={styles.buttonText}>Register</Text>
+                        </TouchableOpacity>
+                    </View>
                 </View>
             </KeyboardAvoidingView>
         </View>
@@ -47,12 +46,12 @@ export function Login (props)
 
 // Style of Log in
 
-const styles = StyleSheet.create ({
+const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: 'white',
         alignItems: "center"
-    
+
     },
     backgroundImage: {
         maxWidth: 400,
@@ -60,16 +59,16 @@ const styles = StyleSheet.create ({
         margin: 50
     },
     welcomeTitle: {
-        fontWeight:"bold",
-        fontSize:35,
-        color:"black",
+        fontWeight: "bold",
+        fontSize: 35,
+        color: "black",
         textAlign: "center",
         marginBottom: 30
 
     },
     inputView: {
         maxWidth: 400,
-        
+
     },
     innerButtonView: {
         alignItems: "center"
@@ -102,7 +101,7 @@ const styles = StyleSheet.create ({
     },
     title: {
         fontSize: 15,
-        color:'black',
+        color: 'black',
         //fontWeight:"bold",
     }
 })

@@ -14,7 +14,7 @@ import { Splash } from './components/Splash';
 import { firebaseConfig } from './Config';
 import {initializeApp,} from 'firebase/app';
 import { getAuth, createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndPassword, signOut } from "firebase/auth"
-import { initializeFirestore, getFirestore, setDoc, doc, addDoc, query, onSnapshot, collection } from 'firebase/firestore'
+import { initializeFirestore, getFirestore, setDoc, doc, addDoc, getDoc, query, onSnapshot, collection } from 'firebase/firestore'
 
 // Initialize the stack
 const Stack = createNativeStackNavigator()
@@ -47,6 +47,18 @@ export default function App() {
     })
     unsubscribe()
   })
+  // get user's auth status
+  const getAuthStatus = () => {
+    return new Promise( ( resolve, reject ) => {
+      if( FBauth.currentUser ) {
+        resolve( true )
+      }
+      else {
+        reject( false )
+      }
+    })
+  }
+
   // Registration
   const RegisterHandler = ( email, password ) => {
     setRegisterError(null)
@@ -80,7 +92,7 @@ export default function App() {
   }
 
   const getData = () => {
-    const FSquery = query( collection( FSdb, `foods/${user.uid}/documents`) )
+    const FSquery = query( collection( FSdb, `foods`) )
     const unsubscribe = onSnapshot( FSquery, ( querySnapshot ) => {
       let FSdata = []
       querySnapshot.forEach( (doc) => {
@@ -93,8 +105,9 @@ export default function App() {
     })
   }
 
-  const getDetail = ( id ) => {
-    
+  const getDetail = ( FScollection, id ) => {
+    const ref = doc( FSdb, FScollection, id )
+
   }
 
   const addDocument = async ( FScollection , data ) => {
@@ -114,7 +127,7 @@ export default function App() {
     <NavigationContainer>
       <Stack.Navigator screenOptions={{headerShown: false}} initialRouteName="Splash" >
         <Stack.Screen name="Splash" options={{ headerShown: false }}>
-          { (props) => <Splash {...props} loadingText="Hello App" auth={auth} test={addDocument} /> }
+          { (props) => <Splash {...props} loadingText="Hello App" auth={auth} authTest={getAuthStatus} /> }
         </Stack.Screen>
         <Stack.Screen name="Login" options={{title:'Log In'}}>
           { (props) => 
@@ -133,12 +146,14 @@ export default function App() {
           /> }
         </Stack.Screen>
         <Stack.Screen name="Home" >
-          { (props) => 
+          { 
+          (props) => 
             <BottomNavigation {...props} 
-            auth={auth}
-            data={data}
-            logout={<Logout handler={LogoutHandler} />}
-          /> }
+              auth={auth}
+              data={data}
+              logout={<Logout handler={LogoutHandler} />}
+            /> 
+          }
         </Stack.Screen>
       </Stack.Navigator>
     </NavigationContainer>

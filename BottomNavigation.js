@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { useNavigation } from '@react-navigation/native'
 import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons'
 
 // Import components
@@ -10,45 +9,45 @@ import { ItemLists } from './components/ItemLists';
 import { Profile } from './components/Profile';
 import { Logout } from './components/Logout';
 
-// Import database
-import { firebaseConfig } from './Config';
-import {initializeApp,} from 'firebase/app'
-import { getAuth, onAuthStateChanged} from "firebase/auth"
-import { initializeFirestore, getFirestore, setDoc, doc, addDoc, collection, query, where, onSnapshot } from 'firebase/firestore'
-
-// initialise the assets from database
-const FBapp = initializeApp( firebaseConfig)
-const FSdb = initializeFirestore(FBapp, {useFetchStreams: false})
-const FBauth = getAuth()
-
-const Tab = createBottomTabNavigator()
 
 
-export function BottomNavigation (props) { 
-  return (
-    <Tab.Navigator screenOptions={{ headerRight: props.logout }}>
-        <Tab.Screen name="Browse" 
-            options={{headerTitleStyle: {fontSize: 30}, headerTitleAlign: 'left',
-            tabBarActiveTintColor: '#f08f11',
-            tabBarIcon: ({color, size}) => (<MaterialCommunityIcon name= "home"color={color} size={size}/>)
-        }}>
-            { (props) => <Home {...props}/> }
-        </Tab.Screen>
-        <Tab.Screen name="Favourites" 
-            options={{headerTitleStyle: {fontSize: 30}, headerTitleAlign: 'left',
-            tabBarActiveTintColor: '#f08f11',
-            tabBarIcon: ({color, size}) => (<MaterialCommunityIcon name= "format-list-bulleted"color={color} size={size}/>)
-        }}>
-            { (props) => <ItemLists {...props} auth={auth} data={ data } /> }
-        </Tab.Screen>
-        <Tab.Screen name="Profile" 
-            options={{headerTitleStyle: {fontSize: 30}, headerTitleAlign: 'left',
-            tabBarActiveTintColor: '#f08f11',
-            headerRight: (props) => <Logout {...props} handler={LogoutHandler} user={user} />,
-            tabBarIcon: ({color, size}) => (<MaterialCommunityIcon name= "account"color={color} size={size}/>)
-        }}>
-            { (props) => <Profile {...props}/> }
-        </Tab.Screen>
-    </Tab.Navigator>
-  );
+
+export function BottomNavigation(props) {
+    const Tab = createBottomTabNavigator()
+    const navigation = useNavigation()
+
+    useEffect(() => {
+        if (!props.auth) {
+            navigation.reset({ index: 0, routes: [{ name: "Login" }] })
+        }
+    }, [props.auth])
+
+    return (
+        <Tab.Navigator screenOptions={{ headerRight: () => props.logout }}>
+            <Tab.Screen name="Browse"
+                options={{
+                    headerTitleStyle: { fontSize: 30 }, headerTitleAlign: 'left',
+                    tabBarActiveTintColor: '#f08f11',
+                    tabBarIcon: ({ color, size }) => (<MaterialCommunityIcon name="home" color={color} size={size} />)
+                }}>
+                {(props) => <Home {...props} />}
+            </Tab.Screen>
+            <Tab.Screen name="Favourites"
+                options={{
+                    headerTitleStyle: { fontSize: 30 }, headerTitleAlign: 'left',
+                    tabBarActiveTintColor: '#f08f11',
+                    tabBarIcon: ({ color, size }) => (<MaterialCommunityIcon name="format-list-bulleted" color={color} size={size} />)
+                }}>
+                {(props) => <ItemLists {...props} auth={props.auth} data={props.data} />}
+            </Tab.Screen>
+            <Tab.Screen name="Profile"
+                options={{
+                    headerTitleStyle: { fontSize: 30 }, headerTitleAlign: 'left',
+                    tabBarActiveTintColor: '#f08f11',
+                    tabBarIcon: ({ color, size }) => (<MaterialCommunityIcon name="account" color={color} size={size} />)
+                }}>
+                {(props) => <Profile {...props} />}
+            </Tab.Screen>
+        </Tab.Navigator>
+    );
 }

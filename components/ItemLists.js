@@ -1,36 +1,34 @@
 import React, { useEffect, useState } from 'react';
-import {View, Text, StyleSheet, TouchableOpacity, Image, TextInput, FlatList} from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import { View, Text, StyleSheet, TouchableOpacity, Image, TextInput, FlatList } from 'react-native';
 
-export function ItemLists (props) 
-{
-    const [ listData, setListData ] = useState()
+export function ItemLists(props) {
+    const [listData, setListData] = useState()
 
-    useEffect( () => {
-        setListData( props.data )
+    useEffect(() => {
+        setListData(props.data)
     }, [props.data])
-    
+
     const data = { time: new Date().getTime(), user: Math.random() * 100 }
-    
-    const renderItem = ({item}) => (
+
+    const renderItem = ({ item }) => (
         <View><Text>{item.time}</Text></View>
-      )
-    return(
+    )
+    return (
 
         <View style={styles.container}>
             <Text style={styles.title}>Morning</Text>
-            <TouchableOpacity style={styles.button} onPress={ () => { props.add('foods', data ) }}>
+            <TouchableOpacity style={styles.button} onPress={() => { props.add('foods', data) }}>
                 <Text>Add something</Text>
             </TouchableOpacity>
-            <FlatList data={ listData } renderItem={ renderItem} keyExtractor={item => item.id} />
+            <FlatList data={listData} renderItem={renderItem} keyExtractor={item => item.id} />
         </View>
     )
 
 }
 
- // Style of Home
-const styles = StyleSheet.create ({
-    container:{
+// Style of Home
+const styles = StyleSheet.create({
+    container: {
         flex: 1,
         backgroundColor: 'white',
     },
