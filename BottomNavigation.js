@@ -7,21 +7,24 @@ import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIc
 import { Home } from './components/Home';
 import { ItemLists } from './components/ItemLists';
 import { Profile } from './components/Profile';
-import { Logout } from './components/Logout';
-
-
-
 
 export function BottomNavigation(props) {
+    const [ data, setData ] = useState()
     const Tab = createBottomTabNavigator()
     const navigation = useNavigation()
 
     useEffect(() => {
+        // if user is logged out, go to "Login" screen
         if (!props.auth) {
             navigation.reset({ index: 0, routes: [{ name: "Login" }] })
         }
     }, [props.auth])
 
+    useEffect( () => {
+        setData( props.data )
+    }, [props.data])
+
+    // added logout button to all page headers, passed as a prop from App.js
     return (
         <Tab.Navigator screenOptions={{ headerRight: () => props.logout }}>
             <Tab.Screen name="Browse"
@@ -30,7 +33,7 @@ export function BottomNavigation(props) {
                     tabBarActiveTintColor: '#f08f11',
                     tabBarIcon: ({ color, size }) => (<MaterialCommunityIcon name="home" color={color} size={size} />)
                 }}>
-                {(props) => <Home {...props} />}
+                {(props) => <Home {...props} foodData={data} test="test"/>}
             </Tab.Screen>
             <Tab.Screen name="Favourites"
                 options={{

@@ -119,6 +119,7 @@ export default function App() {
   }
 
   const setDocument = async ( FScollection, id, data ) => {
+    // adding a document with the id set manually
     const ref = doc( FSdb, FScollection, id )
     await setDoc( ref, data )
   }
