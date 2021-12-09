@@ -5,7 +5,7 @@ import { getStorage, ref, getDownloadURL } from "firebase/storage"
 
 export function Home(props) {
     const FBstorage = getStorage()
-
+    // image for the card
     const ItemImage = (props) => {
         const [image, setImage] = useState()
 
@@ -18,20 +18,25 @@ export function Home(props) {
             const imgRef = ref(FBstorage, `foods/${props.image}`)
             getDownloadURL(imgRef)
                 .then((url) => {
-                    fetch( url ).then((res) => res.blob() ).then( (img) => setImage(img) )
+                    setImage( url )
                 })
                 .catch((error) => console.log(error))
         }
         if( !image ) {
-            return( <Text>Hello</Text>)
+            return (
+                <Text>...Loading...</Text>
+            )
         }
         else{
-            return( <Image source={image} />)
+            return( <Image source={{uri: image}} style={{width:100, height: 100}} />)
         }
     }
 
     const Card = (props) => {
+        // restrict the length of the name
+        // useEffect( () => {
 
+        // })
         return (
             <View style={styles.card}>
                 <ItemImage image={props.image} />
@@ -54,6 +59,7 @@ export function Home(props) {
                 data={props.foodData}
                 keyExtractor={item => item.id}
                 horizontal={false}
+                numColumns={2}
             />
         </View>
     )
@@ -69,6 +75,6 @@ const styles = StyleSheet.create({
         textAlign: 'center'
     },
     card: {
-        height: 50,
+        minHeight: 100,
     }
 })
