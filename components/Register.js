@@ -25,7 +25,7 @@ export function Register (props)
     
     useEffect( () => {
         if( props.auth === true ) {
-          navigation.reset({ index: 0, routes: [ {name: 'BottomNavigation'} ] })
+          navigation.reset({ index: 0, routes: [ {name: 'Home'} ] })
         }
     }, [props.auth])
 
