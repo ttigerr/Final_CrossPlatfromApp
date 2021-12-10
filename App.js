@@ -1,14 +1,12 @@
-import { StatusBar } from 'expo-status-bar';
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 // Import components
 import { Login } from './components/Login';
 import { Register } from './components/Register';
-import { BottomNavigation } from './components/BottomNavigation';
+import { BottomNavigation } from './BottomNavigation';
 import { Logout } from './components/Logout';
 import { Splash } from './components/Splash';
 
@@ -16,7 +14,7 @@ import { Splash } from './components/Splash';
 import { firebaseConfig } from './Config';
 import {initializeApp,} from 'firebase/app';
 import { getAuth, createUserWithEmailAndPassword, onAuthStateChanged, signInWithEmailAndPassword, signOut } from "firebase/auth"
-import { initializeFirestore, getFirestore, setDoc, doc, addDoc, collection } from 'firebase/firestore'
+import { initializeFirestore, getFirestore, setDoc, doc, addDoc, getDoc, query, onSnapshot, collection } from 'firebase/firestore'
 
 // Initialize the stack
 const Stack = createNativeStackNavigator()
@@ -172,3 +170,4 @@ const styles = StyleSheet.create({
   },
   
 });
+

@@ -35,7 +35,7 @@ export function BottomNavigation(props) {
                 }}>
                 {(props) => <Home {...props} foodData={data} test="test"/>}
             </Tab.Screen>
-            <Tab.Screen name="Favourites"
+            <Tab.Screen name="Lists"
                 options={{
                     headerTitleStyle: { fontSize: 30 }, headerTitleAlign: 'left',
                     tabBarActiveTintColor: '#f08f11',
@@ -43,14 +43,14 @@ export function BottomNavigation(props) {
                 }}>
                 {(props) => <ItemLists {...props} auth={props.auth} data={props.data} />}
             </Tab.Screen>
-            <Tab.Screen name="Profile"
+            {/* <Tab.Screen name="Profile"
                 options={{
                     headerTitleStyle: { fontSize: 30 }, headerTitleAlign: 'left',
                     tabBarActiveTintColor: '#f08f11',
                     tabBarIcon: ({ color, size }) => (<MaterialCommunityIcon name="account" color={color} size={size} />)
                 }}>
                 {(props) => <Profile {...props} />}
-            </Tab.Screen>
+            </Tab.Screen> */}
         </Tab.Navigator>
     );
 }

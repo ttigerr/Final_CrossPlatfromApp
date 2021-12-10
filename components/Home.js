@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import {View, Text, StyleSheet, TouchableOpacity, SafeAreaView, ScrollView, TextInput, Image, Dimensions, Animated, FlatList} from 'react-native';
+import {View, Text, StyleSheet, TouchableOpacity, SafeAreaView, ScrollView, TextInput, Image, Dimensions, Animated, FlatList, Modal} from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { getStorage, ref, getDownloadURL } from "firebase/storage"
 import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -10,27 +11,57 @@ export function Home (props)
 {
     const navigation = useNavigation()
 
-    // const FoodCards = ({food}) => {
-    //     return (
-    //         <View style={styles.itemsCardView}>
-    //             <Image style={styles.foodCardsImage} source={food.Image}/>
-    //         </View>
-    //     )
-    // }
+    const FBstorage = getStorage()
 
-    const ItemCardsView = (props) => {
+    // image for the card
+    const ItemImage = (props) => 
+    {
+        const [image, setImage] = useState()
+
+        useEffect( () => {
+            if(!image) { getItemImage(props.image) }
+        })
+        // function to get the image
+        const getItemImage = (name) => {
+            // create a reference to the image
+            const imgRef = ref(FBstorage, `foods/${props.image}`)
+            getDownloadURL(imgRef)
+                .then((url) => {
+                    setImage( url )
+                })
+                .catch((error) => console.log(error))
+        }
+        if( !image ) {
+            return (
+                <Text>...Loading...</Text>
+            )
+        }
+        else{
+            return( <Image source={{uri: image}} style={{width:140, height: 100}} />)
+        }
+    }
+
+    const Card = (props) => {
+        // restrict the length of the name
+        // useEffect( () => {
+
+        // })
         return (
             <View style={styles.innerCardView}>
                 <View style={styles.innerCardView2}>
-                    <Image source = {props.image} style={styles.foodImage}/>
+                    <ItemImage image={props.image} />
                 </View>
                 <View style={{flex: 1}}>
-                    <Text style={styles.texrtInnerCard}>{props.title}</Text>
-                    <Text style={styles.texrtInnerCard2}>{props.subtitle}</Text>
+                    <Text style={styles.texrtInnerCard}>{props.name}</Text>
+                    <Text style={styles.texrtInnerCard2}>{props.calories}</Text>
                 </View>
             </View>
         )
     }
+
+    const renderItem = ({ item }) => (
+        <Card name={item.name} calories={item.calories} image={item.image} />
+    )
     return(
 
         <SafeAreaView style={styles.container}>
@@ -42,27 +73,20 @@ export function Home (props)
                     </View>
                     <Text style={styles.title}>Breakfast</Text>
                         <View style={styles.itemsCardView}>
-                            <ScrollView horizontal = {true}>
-                                <ItemCardsView image = {require('../assets/freshFood2.jpeg')} title = "Salmon Salad" subtitle="340 kcal"/>
-                                <ItemCardsView image = {require('../assets/freshFood1.jpeg')} title = "Checken with Avo" subtitle="500 kcal"/>
-                                <ItemCardsView image = {require('../assets/freshFood2.jpeg')} title = "Mixed Salad" subtitle="400 kcal"/>
-                            </ScrollView>
-                        </View>
-                    <Text style={styles.title}>Lunch</Text>
-                        <View style={styles.itemsCardView}>
-                            <ScrollView horizontal = {true}>
-                                <ItemCardsView image = {require('../assets/freshFood2.jpeg')} title = "Salmon Salad" subtitle="400 kcal"/>
-                                <ItemCardsView image = {require('../assets/freshFood1.jpeg')} title = "Salmon Salad" subtitle="400 kcal"/>
-                                <ItemCardsView image = {require('../assets/freshFood2.jpeg')} title = "Salmon Salad"subtitle="400 kcal"/>
-                            </ScrollView>
-                        </View>
-                    <Text style={styles.title}>Dinner</Text>
-                        <View style={styles.itemsCardView}>
-                            <ScrollView horizontal = {true}>
-                                <ItemCardsView image = {require('../assets/freshFood2.jpeg')} title = "Salmon Salad"/>
-                                <ItemCardsView image = {require('../assets/freshFood1.jpeg')} title = "Salmon Salad"/>
-                                <ItemCardsView image = {require('../assets/freshFood2.jpeg')} title = "Salmon Salad"/>
-                            </ScrollView>
+                            {/* <ScrollView horizontal = {true}>
+                                <FlatList
+                                    renderItem={renderItem}
+                                    data={props.foodData}
+                                    keyExtractor={item => item.id}
+                                    numColumns={2}
+                                />
+                            </ScrollView> */}
+                            <FlatList
+                                    renderItem={renderItem}
+                                    data={props.foodData}
+                                    keyExtractor={item => item.id}
+                                    numColumns={2}
+                            />
                         </View>
                 </View> 
             </ScrollView>
@@ -94,9 +118,10 @@ const styles = StyleSheet.create ({
         
     },
     itemsCardView: {
-        height: 190,
+        height: 700,
         elevation: 15,
-        marginVertical: 20
+        marginVertical: 20,
+        alignItems: "center",
     },
     innerCardView: {
         height: 180,
@@ -104,7 +129,6 @@ const styles = StyleSheet.create ({
         elevation: 15,
         borderWidth: 0.2,  
         borderRadius: 10,
-
     },
     innerCardView2: {
         flex: 2,

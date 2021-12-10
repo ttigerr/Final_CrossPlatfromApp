@@ -34,8 +34,8 @@ export function ItemLists (props)
         <View style={styles.container}>
             <ScrollView>
                 <View style={styles.inner}>
-                        <View style={styles.itemsCardView}>
-                            <Text style={styles.title}>Your Plans</Text>
+                    <View style={styles.itemsCardView}>
+                        <Text style={styles.title}>Your Plans</Text>
                             <View style={styles.innerCardView}>
                                 {/* <Image style={styles.itemsImage} source={require('../assets/morning.png')} /> */}
                             </View>
@@ -45,7 +45,7 @@ export function ItemLists (props)
                             <View style={styles.innerCardView}>
                                 {/* <Image style={styles.itemsImage} source={require('../assets/night.png')} /> */}
                             </View>
-                        </View>
+                    </View>
                 </View>
             </ScrollView>
             
