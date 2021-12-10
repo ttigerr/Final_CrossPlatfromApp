@@ -36,19 +36,31 @@ export default function App() {
   const [loginError, setLoginError ] = useState()
 
   useEffect(() => {
-    onAuthStateChanged( FBauth, (user) => {
+    const unsubscribe = onAuthStateChanged( FBauth, (user) => {
       if( user ) { 
         setAuth(true) 
         setUser(user)
-        console.log( 'authed')
-        
+        if( !data ) { getData() }
       }
       else {
         setAuth(false)
         setUser(null)
       }
     })
+    unsubscribe()
   })
+  // get user's auth status
+  const getAuthStatus = () => {
+    return new Promise( ( resolve, reject ) => {
+      if( FBauth.currentUser ) {
+        resolve( true )
+      }
+      else {
+        reject( false )
+      }
+    })
+  }
+
   // Registration
   const RegisterHandler = ( email, password ) => {
     setRegisterError(null)
@@ -81,7 +93,7 @@ export default function App() {
     .catch( (error) => console.log(error.code) )
   }
 
-  const getData = (props) => {
+  const getData = () => {
     const FSquery = query( collection( FSdb, `foods`) )
     const unsubscribe = onSnapshot( FSquery, ( querySnapshot ) => {
       let FSdata = []
@@ -95,13 +107,32 @@ export default function App() {
     })
   }
 
+  const getDetail = ( FScollection, id ) => {
+    const ref = doc( FSdb, FScollection, id )
+
+  }
+
+  const addDocument = async ( FScollection , data ) => {
+    // adding data to a collection with automatic id
+    const ref = await addDoc( collection( FSdb, FScollection) , data )
+    // log the id of the new document
+    //console.log( ref.id )
+    //return ref
+  }
+
+  const setDocument = async ( FScollection, id, data ) => {
+    // adding a document with the id set manually
+    const ref = doc( FSdb, FScollection, id )
+    await setDoc( ref, data )
+  }
+
   return (
     <NavigationContainer>
-      <Stack.Navigator screenOptions={{headerShown: false}} >
-        <Stack.Screen name="Splash">
-          { (props) => <Splash {...props} loadingText="Welcome to freshmade" /> }
+      <Stack.Navigator screenOptions={{headerShown: false}} initialRouteName="Splash" >
+        <Stack.Screen name="Splash" options={{ headerShown: false }}>
+          { (props) => <Splash {...props} loadingText="Hello App" auth={auth} authTest={getAuthStatus} /> }
         </Stack.Screen>
-        <Stack.Screen name="Login" options={{title: 'Log In'}}>
+        <Stack.Screen name="Login" options={{title:'Log In'}}>
           { (props) => 
               <Login {...props} 
               handler={LoginHandler} 
@@ -117,14 +148,15 @@ export default function App() {
             error={registerError} 
           /> }
         </Stack.Screen>
-        <Stack.Screen name="BottomNavigation" >
-          { (props) => 
+        <Stack.Screen name="Home" >
+          { 
+          (props) => 
             <BottomNavigation {...props} 
-            auth={auth}
-            //get = {getData}
-            
-          /> }
-          
+              auth={auth}
+              data={data}
+              logout={<Logout handler={LogoutHandler} />}
+            /> 
+          }
         </Stack.Screen>
       </Stack.Navigator>
     </NavigationContainer>
