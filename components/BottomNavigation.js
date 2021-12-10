@@ -5,13 +5,12 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons'
 
 // Import components
-import { Home } from './components/Home';
-import { ItemLists } from './components/ItemLists';
-import { Profile } from './components/Profile';
-import { Logout } from './components/Logout';
+import { Home } from './Home';
+import { ItemLists } from './ItemLists';
+import { Logout } from './Logout';
 
 // Import database
-import { firebaseConfig } from './Config';
+import { firebaseConfig } from '../Config';
 import {initializeApp,} from 'firebase/app'
 import { getAdditionalUserInfo, getAuth, onAuthStateChanged} from "firebase/auth"
 import { initializeFirestore, getFirestore, setDoc, doc, addDoc, collection, query, where, onSnapshot } from 'firebase/firestore'
@@ -55,14 +54,6 @@ export function BottomNavigation (props) {
             tabBarIcon: ({color, size}) => (<MaterialCommunityIcon name= "format-list-bulleted"color={color} size={size}/>)
         }}>
             { (props) => <ItemLists {...props} /> }
-        </Tab.Screen>
-        <Tab.Screen name="Profile" 
-            options={{headerTitleStyle: {fontSize: 30}, headerTitleAlign: 'left',
-            tabBarActiveTintColor: '#f08f11',
-            //headerRight: (props) => <Logout {...props} handler={LogoutHandler} user={user} />,
-            tabBarIcon: ({color, size}) => (<MaterialCommunityIcon name= "account"color={color} size={size}/>)
-        }}>
-            { (props) => <Profile {...props}/> }
         </Tab.Screen>
     </Tab.Navigator>
   );

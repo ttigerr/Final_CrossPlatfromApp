@@ -8,7 +8,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 // Import components
 import { Login } from './components/Login';
 import { Register } from './components/Register';
-import { BottomNavigation } from './BottomNavigation';
+import { BottomNavigation } from './components/BottomNavigation';
 import { Logout } from './components/Logout';
 import { Splash } from './components/Splash';
 
@@ -117,12 +117,14 @@ export default function App() {
             error={registerError} 
           /> }
         </Stack.Screen>
-        <Stack.Screen name="Home" >
+        <Stack.Screen name="BottomNavigation" >
           { (props) => 
             <BottomNavigation {...props} 
             auth={auth}
-            get = {getData}
+            //get = {getData}
+            
           /> }
+          
         </Stack.Screen>
       </Stack.Navigator>
     </NavigationContainer>

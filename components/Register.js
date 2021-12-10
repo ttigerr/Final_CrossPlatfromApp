@@ -14,21 +14,6 @@ export function Register (props)
 
     const navigation = useNavigation()
 
-    useEffect( () => {
-         if(validEmail && validPassword) {
-          setValidForm( true )
-        }
-        else {
-          setValidForm( false )
-        }
-    }, [validEmail, validPassword])
-    
-    useEffect( () => {
-        if( props.auth === true ) {
-          navigation.reset({ index: 0, routes: [ {name: 'BottomNavigation'} ] })
-        }
-    }, [props.auth])
-
     // Validate email from user
     const validateEmail = ( emailVal ) => {
         if( emailVal.indexOf('@') > 0 ) {
@@ -54,6 +39,21 @@ export function Register (props)
       const submitHandler = () => {
         props.handler( email, password )
       }
+
+    useEffect( () => {
+        if(validEmail && validPassword) {
+         setValidForm( true )
+       }
+       else {
+         setValidForm( false )
+       }
+    }, [validEmail, validPassword])
+   
+   useEffect( () => {
+       if( props.auth === true ) {
+         navigation.reset({ index: 0, routes: [ {name: 'Home'} ] })
+       }
+    }, [props.auth])
     
     return(
         
