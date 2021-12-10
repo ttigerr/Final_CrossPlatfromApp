@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import {View, Text, StyleSheet, TouchableOpacity, Image, TextInput, FlatList, ScrollView} from 'react-native';
+import {View, Text, StyleSheet, TouchableOpacity, Image, TextInput, FlatList, ScrollView, StatusBar} from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
 export function ItemLists (props) 
@@ -10,25 +10,33 @@ export function ItemLists (props)
         setListData( props.data )
     }, [props.data])
     
-    const data = { time: new Date().getTime(), user: Math.random() * 100 }
+    // const data = { time: new Date().getTime(), user: Math.random() * 100 }
     
-    const renderItem = ({item}) => (
-        <View><Text>{item.time}</Text></View>
-      )
+    // const renderItem = ({item}) => (
+    //     <View><Text>{item.time}</Text></View>
+    //   )
 
-    const ItemCardsView = (props) => {
-        return (
-            <View style={styles.innerCardView}>
-                <View style={styles.innerCardView2}>
-                    <Image source = {props.image} style={styles.foodImage}/>
+
+    return (
+        <View style={styles.container}>
+            <View style={styles.inner}>
+                <Text style={styles.text}>Your Plans</Text>
+                <View style={styles.itemContainer}>
+                    {/* <Image source={ require('./assets/fresh4.jpeg') } style={styles.image}/> */}
+                    <TextInput 
+                        style={styles.inputBar}
+                        placeholder="Enter a task name" 
+                    />
+                    <TouchableOpacity style={ styles.button }>
+                        <Text style={styles.textButton}>Create</Text>
+                    </TouchableOpacity>
                 </View>
-                <View style={{flex: 1}}>
-                    <Text style={styles.texrtInnerCard}>{props.title}</Text>
-                    <Text style={styles.texrtInnerCard2}>340 kcal</Text>
-                </View>
+                <FlatList  />
+                <StatusBar style="auto" />
             </View>
-        )
-    }
+        </View>
+    );
+
     return(
 
         <View style={styles.container}>
@@ -65,51 +73,54 @@ const styles = StyleSheet.create ({
         flex: 1,
         backgroundColor: 'white',
     },
-    metaText: {
-        textAlign: 'center'
-    },
     inner: {
         marginHorizontal: 20
     },
-    title: {
-        margin: 20,
+    text: {
         fontSize: 25,
-        fontWeight: "bold"
-    },
-    itemsCardView: {
-        height: 370,
-        elevation: 15,
-        marginVertical: 20,
-        borderRadius: 20
-    },
-    innerCardView: {
-        height: 80,
-        width: 20,
-        elevation: 15,
-        borderWidth: 0.2,  
-        borderRadius: 10,
+        fontWeight: 'bold',
+        color: '#D45964',
+        marginTop: 30,
 
-        marginLeft: 20,
-        marginBottom: 15
     },
-    innerCardView2: {
-        flex: 2,
-        alignItems: "center",
-        marginVertical: 10,
-   },
-   itemsImage: {
-       flex: 1,
-       width: 80,
-       height: 100,
-       borderRadius: 70,
-       resizeMode: 'cover',
-   },
-   texrtInnerCard: {
-       fontWeight: "bold",
-        marginLeft: 10,
-        marginBottom: 5
-   },
-   texrtInnerCard2: {
-    marginLeft: 10
+    image: {
+        marginTop: 30,
+        height: 250,
+        width: 380,
+        alignItems: 'center',
     },
+    itemContainer: {
+        display: 'flex',
+        alignItems: 'center',
+        flexDirection: "row",
+        justifyContent: 'center',
+        marginVertical: 20,
+    },
+    inputBar: {
+        borderColor: '#DDDDDD',
+        borderRadius: 10,
+        borderWidth: 1,
+        padding: 10,
+        width: 250,
+        marginRight: 20   
+    },
+    button: {
+        backgroundColor: '#D45964',
+        width: 100,
+        padding: 10,
+        borderRadius: 5,
+        //margin: 30,
+    },
+    buttonDisabled: {
+        backgroundColor: "lightgray",
+        width: 100,
+        padding: 10,
+        borderRadius: 5,
+        margin: 30,
+    },
+    textButton: {
+        color: 'white',
+        textAlign: 'center',
+    },
+    
 })

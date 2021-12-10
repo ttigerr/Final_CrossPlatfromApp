@@ -146,8 +146,8 @@ const styles = StyleSheet.create ({
         marginLeft: 10,
         marginBottom: 5
    },
-   texrtInnerCard2: {
-    marginLeft: 10
-},
+    texrtInnerCard2: {
+        marginLeft: 10
+    },
 
 })
