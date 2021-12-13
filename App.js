@@ -6,9 +6,11 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 // Import components
 import { Login } from './components/Login';
 import { Register } from './components/Register';
+import { Home } from './components/Home';
 import { BottomNavigation } from './BottomNavigation';
 import { Logout } from './components/Logout';
 import { Splash } from './components/Splash';
+import { Detail } from './components/Detail';
 
 // Import firebase
 import { firebaseConfig } from './Config';
@@ -59,6 +61,17 @@ export default function App() {
     })
   }
 
+  // useEffect(() => {
+  //   // if user is logged out, go to "Login" screen
+  //   if (!props.auth) {
+  //       navigation.reset({ index: 0, routes: [{ name: "Login" }] })
+  //   }
+  // }, [props.auth])
+
+  // useEffect( () => {
+  //   setData( props.data )
+  // }, [props.data])
+
   // Registration
   const RegisterHandler = ( email, password ) => {
     setRegisterError(null)
@@ -105,9 +118,9 @@ export default function App() {
     })
   }
 
-  const getDetail = ( FScollection, id ) => {
+  const getDetail = async ( FScollection, id ) => {
     const ref = doc( FSdb, FScollection, id )
-    const docData = await getDoc( docRef )
+    const docData =  await getDoc( ref )
     return new Promise( ( resolve, reject ) => {
       if( docData.exists() ) {
         let document = docData.data()
@@ -162,7 +175,7 @@ export default function App() {
             error={registerError} 
           /> }
         </Stack.Screen>
-        <Stack.Screen name="Home" user={user} >
+        <Stack.Screen name="Home" user={user}  >
           { 
           (props) => 
             <BottomNavigation {...props} 
@@ -170,6 +183,14 @@ export default function App() {
               data={data}
               add={addUserData}
               logout={<Logout handler={LogoutHandler} />}
+            /> 
+          }
+        </Stack.Screen>
+        <Stack.Screen name="Detail" user={user} >
+          { 
+          (props) => 
+            <Detail {...props} 
+              get={getDetail}
             /> 
           }
         </Stack.Screen>

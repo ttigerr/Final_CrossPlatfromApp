@@ -10,7 +10,6 @@ import { elevate } from 'react-native-elevate';
 export function Home (props) 
 {
     const navigation = useNavigation()
-
     const FBstorage = getStorage()
 
     // image for the card
@@ -41,7 +40,20 @@ export function Home (props)
         }
     }
 
-    const Card = (props) => {
+    const onClickItem = (item) => {
+        navigation.navigate('Detail',
+        {
+            name: item.name, 
+            image: item.image, 
+            ingredients: item.ingredients, 
+            carbo: item.carbo, 
+            energy: item.energy, 
+            protein: item.protein, 
+            calories: item.calories 
+        })
+    }
+
+    const Card = (props, item) => {
         // restrict the length of the name
         // useEffect( () => {
 
@@ -52,38 +64,30 @@ export function Home (props)
                     <ItemImage image={props.image} />
                 </View>
                 <View style={{flex: 1}}>
-                    <Text style={styles.texrtInnerCard}>{props.name}</Text>
-                    <Text style={styles.texrtInnerCard2}>{props.calories}</Text>
+                    <Text style={styles.texrtInnerCard} onPress={() => onClickItem(item)}>{props.name}</Text>
+                    <Text style={styles.texrtInnerCard2} onPress={() => onClickItem(item)}>{props.calories}</Text>
                 </View>
             </View>
         )
     }
 
     const renderItem = ({ item }) => (
-        <Card name={item.name} calories={item.calories} image={item.image} />
+        <Card onPress={() => onClickItem(item)} name={item.name} calories={item.calories} image={item.image} />
+        
     )
     return(
 
-        <SafeAreaView style={styles.container}>
-            <ScrollView>
-                <View style={styles.inner}>
-                    <View style={styles.searchBar}>
-                        <MaterialCommunityIcon name="magnify" size={20} style={{marginLeft: 15}}/>
-                        <TextInput placeholder="Search" style={{marginLeft: 10}}/>
-                    </View>
-                    <Text style={styles.title}>Breakfast</Text>
-                        <View style={styles.itemsCardView}>
-                            <FlatList
-                                    renderItem={renderItem}
-                                    data={props.foodData}
-                                    keyExtractor={item => item.id}
-                                    numColumns={2}
-                            />
-                        </View>
-                </View> 
-            </ScrollView>
-            
-        </SafeAreaView>
+        <View style={styles.container}>
+            <Text style={styles.title}>Breakfast</Text>
+                <View style={styles.itemsCardView}>
+                    <FlatList
+                        renderItem={renderItem}
+                        data={props.foodData}
+                        keyExtractor={item => item.id}
+                        numColumns={2}
+                    />
+                </View>
+        </View> 
     )
 }
 
@@ -98,7 +102,9 @@ const styles = StyleSheet.create ({
     },
     title: {
         fontSize: 20,
-        fontWeight: 'bold'
+        fontWeight: 'bold',
+        marginLeft: 50,
+        marginTop: 20
     },
     searchBar: {
         height: 40,

@@ -67,7 +67,7 @@ export function Register (props)
                     <Text style={styles.title}>Password</Text>
                     <TextInput style={styles.textInput} onChangeText={ (val) => validatePassword(val) } secureTextEntry={true}/>
                         <View style={styles.innerButtonView}>
-                            {/* <Message message={props.error} /> */}
+                            <Message message={props.error} />
                             <TouchableOpacity 
                                 style={ (validForm) ? styles.button : styles.disableButton} 
                                 disabled={ (validForm) ? false : true }

@@ -6,10 +6,12 @@ import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIc
 // Import components
 import { Home } from './components/Home';
 import { ItemLists } from './components/ItemLists';
+import { Detail } from './components/Detail';
 import { Profile } from './components/Profile';
 
 export function BottomNavigation(props) {
     const [ data, setData ] = useState()
+    const [userData, setUserData] = useState()
     const Tab = createBottomTabNavigator()
     const navigation = useNavigation()
 
@@ -29,6 +31,11 @@ export function BottomNavigation(props) {
         setData( props.data )
     }, [props.data])
 
+    useEffect (() => {
+        setUserData(props.userData)
+
+    }, [props.userData])
+
     // added logout button to all page headers, passed as a prop from App.js
     return (
         <Tab.Navigator screenOptions={{ headerRight: () => props.logout }}>
@@ -39,8 +46,6 @@ export function BottomNavigation(props) {
                     tabBarIcon: ({ color, size }) => (<MaterialCommunityIcon name="home" color={color} size={size} />)
                 }}>
                 {(props) => <Home {...props} foodData={data}  test="test"/>}
-                { (props) => <Detail {...props} get={getDetail}  />  }
-    
             </Tab.Screen>
             <Tab.Screen name="Lists"
                 options={{
@@ -48,16 +53,9 @@ export function BottomNavigation(props) {
                     tabBarActiveTintColor: '#f08f11',
                     tabBarIcon: ({ color, size }) => (<MaterialCommunityIcon name="format-list-bulleted" color={color} size={size} />)
                 }}>
-                {(props) => <ItemLists {...props} userData={data} add={addData} />}
+                {(props) => <ItemLists {...props} userData={userData}  />}
             </Tab.Screen>
-            {/* <Tab.Screen name="Profile"
-                options={{
-                    headerTitleStyle: { fontSize: 30 }, headerTitleAlign: 'left',
-                    tabBarActiveTintColor: '#f08f11',
-                    tabBarIcon: ({ color, size }) => (<MaterialCommunityIcon name="account" color={color} size={size} />)
-                }}>
-                {(props) => <Profile {...props} />}
-            </Tab.Screen> */}
+            
         </Tab.Navigator>
     );
 }

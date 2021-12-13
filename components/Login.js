@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import {View, Text, StyleSheet, TouchableOpacity, Image, TextInput, KeyboardAvoidingView, Platform} from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { Message } from './Message';
 
 export function Login (props) 
 {
@@ -29,7 +30,7 @@ export function Login (props)
                         onChangeText={ (val) => setUserPassword(val) } 
                         secureTextEntry={true}
                     />
-                    {/* <Message message={props.error} /> */}
+                    <Message message={props.error} />
                         <View style={styles.innerButtonView}>
                             <TouchableOpacity style={styles.button} onPress={ () => { props.handler(userEmail,userPassword) }}>
                                 <Text style={styles.buttonText}>Log In</Text>
