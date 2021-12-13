@@ -28,14 +28,6 @@ export function ItemLists (props)
 
     const data = { time: new Date().getTime(), user: Math.random() * 100 }
 
-    
-    // const data = { time: new Date().getTime(), user: Math.random() * 100 }
-    
-    // const renderItem = ({item}) => (
-    //     <View><Text>{item.time}</Text></View>
-    //   )
-
-
     return (
         <View style={styles.container}>
             <View style={styles.inner}>

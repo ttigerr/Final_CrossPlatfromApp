@@ -182,11 +182,12 @@ export default function App() {
               auth={auth}
               data={data}
               add={addUserData}
+              get={getDetail}
               logout={<Logout handler={LogoutHandler} />}
             /> 
           }
         </Stack.Screen>
-        <Stack.Screen name="Detail" user={user} >
+        <Stack.Screen name="Detail" >
           { 
           (props) => 
             <Detail {...props} 

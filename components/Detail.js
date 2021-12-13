@@ -10,14 +10,14 @@ export function Detail ( props ) {
 
   useEffect( () => {
     if( !data ) {
-      props.get( id )
+      props.get( 'users', id )
       .then( (document) => setData(document) )
       .catch( (error) => console.log(error) )
     }
   })
 
   if( !data ) {
-    return <Text style={{textAlign: 'center', alignItems: 'center'}}>Loading...</Text>
+    return <Text style={{margin: 50}}>Loading...</Text>
   }
   else{
     return(
