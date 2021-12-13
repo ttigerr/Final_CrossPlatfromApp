@@ -4,11 +4,30 @@ import { useNavigation } from '@react-navigation/native';
 
 export function ItemLists (props) 
 {
+    // Initialise states
     const [ listData, setListData ] = useState()
+    const [ validInput, setValidInput ] = useState(false)
+    const [userInput, setUserInput] = useState()
+    const [appData, setAppData] = useState(true)
 
+  // check and define the length of the input 
+  const onTextChange = (value) => {
+    setUserInput(value)
+    if(value.length >= 4)
+    {
+      setValidInput(true)
+    }
+    else
+    {
+      setValidInput(false)
+    }
+  }
     useEffect( () => {
         setListData( props.data )
     }, [props.data])
+
+    const data = { time: new Date().getTime(), user: Math.random() * 100 }
+
     
     // const data = { time: new Date().getTime(), user: Math.random() * 100 }
     
@@ -26,8 +45,9 @@ export function ItemLists (props)
                     <TextInput 
                         style={styles.inputBar}
                         placeholder="Enter a task name" 
+                        onChangeText={onTextChange}
                     />
-                    <TouchableOpacity style={ styles.button }>
+                    <TouchableOpacity style={ styles.button } onPress={ () => { props.add('users', data ) }}>
                         <Text style={styles.textButton}>Create</Text>
                     </TouchableOpacity>
                 </View>
@@ -36,34 +56,6 @@ export function ItemLists (props)
             </View>
         </View>
     );
-
-    return(
-
-        <View style={styles.container}>
-            <ScrollView>
-                <View style={styles.inner}>
-                    <View style={styles.itemsCardView}>
-                        <Text style={styles.title}>Your Plans</Text>
-                            <View style={styles.innerCardView}>
-                                {/* <Image style={styles.itemsImage} source={require('../assets/morning.png')} /> */}
-                            </View>
-                            <View style={styles.innerCardView}>
-                                {/* <Image style={styles.itemsImage} source={require('../assets/lunch.png')} /> */}
-                            </View>
-                            <View style={styles.innerCardView}>
-                                {/* <Image style={styles.itemsImage} source={require('../assets/night.png')} /> */}
-                            </View>
-                    </View>
-                </View>
-            </ScrollView>
-            
-            {/* <TouchableOpacity style={styles.button} onPress={ () => { props.add('foods', data ) }}>
-                <Text>Add something</Text>
-            </TouchableOpacity>
-            <FlatList data={ listData } renderItem={ renderItem} keyExtractor={item => item.id} /> */}
-
-        </View>
-    )
 
 }
 

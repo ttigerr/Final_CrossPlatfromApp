@@ -107,6 +107,17 @@ export default function App() {
 
   const getDetail = ( FScollection, id ) => {
     const ref = doc( FSdb, FScollection, id )
+    const docData = await getDoc( docRef )
+    return new Promise( ( resolve, reject ) => {
+      if( docData.exists() ) {
+        let document = docData.data()
+        document.id = id
+        resolve( document )
+      }
+      else {
+        reject('no date displayed')
+      }
+    })
 
   }
 
@@ -122,6 +133,11 @@ export default function App() {
     // adding a document with the id set manually
     const ref = doc( FSdb, FScollection, id )
     await setDoc( ref, data )
+  }
+
+  const addUserData = async( FScollection , data ) => {
+    const ref = await addDoc( collection( FSdb, FScollection) , data )
+
   }
 
   return (
@@ -146,12 +162,13 @@ export default function App() {
             error={registerError} 
           /> }
         </Stack.Screen>
-        <Stack.Screen name="Home" >
+        <Stack.Screen name="Home" user={user} >
           { 
           (props) => 
             <BottomNavigation {...props} 
               auth={auth}
               data={data}
+              add={addUserData}
               logout={<Logout handler={LogoutHandler} />}
             /> 
           }

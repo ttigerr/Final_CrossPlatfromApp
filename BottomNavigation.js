@@ -20,6 +20,11 @@ export function BottomNavigation(props) {
         }
     }, [props.auth])
 
+    const onClick = (item) => {
+        console.log( item.id )
+        navigation.navigate('Detail', {id: item.id, time: item.time, user: item.user } )
+      }
+
     useEffect( () => {
         setData( props.data )
     }, [props.data])
@@ -33,7 +38,9 @@ export function BottomNavigation(props) {
                     tabBarActiveTintColor: '#f08f11',
                     tabBarIcon: ({ color, size }) => (<MaterialCommunityIcon name="home" color={color} size={size} />)
                 }}>
-                {(props) => <Home {...props} foodData={data} test="test"/>}
+                {(props) => <Home {...props} foodData={data}  test="test"/>}
+                { (props) => <Detail {...props} get={getDetail}  />  }
+    
             </Tab.Screen>
             <Tab.Screen name="Lists"
                 options={{
@@ -41,7 +48,7 @@ export function BottomNavigation(props) {
                     tabBarActiveTintColor: '#f08f11',
                     tabBarIcon: ({ color, size }) => (<MaterialCommunityIcon name="format-list-bulleted" color={color} size={size} />)
                 }}>
-                {(props) => <ItemLists {...props} auth={props.auth} data={props.data} />}
+                {(props) => <ItemLists {...props} userData={data} add={addData} />}
             </Tab.Screen>
             {/* <Tab.Screen name="Profile"
                 options={{

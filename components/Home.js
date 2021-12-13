@@ -73,14 +73,6 @@ export function Home (props)
                     </View>
                     <Text style={styles.title}>Breakfast</Text>
                         <View style={styles.itemsCardView}>
-                            {/* <ScrollView horizontal = {true}>
-                                <FlatList
-                                    renderItem={renderItem}
-                                    data={props.foodData}
-                                    keyExtractor={item => item.id}
-                                    numColumns={2}
-                                />
-                            </ScrollView> */}
                             <FlatList
                                     renderItem={renderItem}
                                     data={props.foodData}
